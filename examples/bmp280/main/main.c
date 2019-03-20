@@ -4,8 +4,8 @@
 #include <esp_system.h>
 #include <bmp280.h>
 
-#define SDA_GPIO 16
-#define SCL_GPIO 17
+#define SDA_GPIO 21
+#define SCL_GPIO 22
 
 void bmp280_test(void *pvParamters)
 {
@@ -21,7 +21,7 @@ void bmp280_test(void *pvParamters)
         vTaskDelay(250 / portTICK_PERIOD_MS);
     }
 
-    while (bmp280_init_desc(&dev, BMP280_I2C_ADDRESS_0, 0, SDA_GPIO, SCL_GPIO) != ESP_OK)
+    while (bmp280_init_desc(&dev, BMP280_I2C_ADDRESS_1, 0, SDA_GPIO, SCL_GPIO) != ESP_OK)
     {
         printf("Could not init device descriptor\n");
         vTaskDelay(250 / portTICK_PERIOD_MS);
