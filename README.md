@@ -4,6 +4,10 @@ Components for Espressif ESP32 [ESP-IDF framework](https://github.com/espressif/
 
 Most of them ported from [esp-open-rtos](https://github.com/SuperHouse/esp-open-rtos).
 
+Use "export EXTRA_COMPONENT_DIRS=~/esp/esp-idf-lib" to include new componet
+
+make menuconfig
+
 
 ## Components
 
@@ -30,4 +34,5 @@ Most of them ported from [esp-open-rtos](https://github.com/SuperHouse/esp-open-
 | **max7219**    | Driver for 8-Digit LED display drivers, MAX7219/MAX7221                 | BSD     | Yes
 | **mcp23017**   | Driver for 16-bit I2C GPIO expander                                     | BSD     | Yes
 | **tda74xx**    | Driver for TDA7439/TDA7439DS/TDA7440D audioprocessors                   | MIT     | Yes
+| **ttn**        | Driver for RFM95 LORA Module                                            | MIT     | Yes
 
