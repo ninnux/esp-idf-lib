@@ -4,8 +4,9 @@ Components for Espressif ESP32 [ESP-IDF framework](https://github.com/espressif/
 
 Most of them ported from [esp-open-rtos](https://github.com/SuperHouse/esp-open-rtos).
 
-Use "export EXTRA_COMPONENT_DIRS=~/esp/esp-idf-lib" to include new componet
+Use "export EXTRA_COMPONENT_DIRS=~/esp/esp-idf-lib/components/" to include new componet
 
+include EXTRA_COMPONENT_DIRS in Makefile
 make menuconfig
 
 
