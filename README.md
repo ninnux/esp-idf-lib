@@ -7,6 +7,7 @@ Most of them ported from [esp-open-rtos](https://github.com/SuperHouse/esp-open-
 Use "export EXTRA_COMPONENT_DIRS=~/esp/esp-idf-lib/components/" to include new componet
 
 include EXTRA_COMPONENT_DIRS in Makefile
+
 make menuconfig
 
 
