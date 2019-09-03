@@ -20,11 +20,17 @@ float zmax=0;
 
 float Xoffset;
 float Yoffset;
+float Zoffset;
 float Xscale;
 float Yscale;
+float Zscale;
 float xmag;
 float ymag;
 float angle;
+float avg_delta_x;
+float avg_delta_y;
+float avg_delta_z;
+float avg_delta;
 
 
 void hmc5883l_test(void *pvParameters)
@@ -66,11 +72,28 @@ void hmc5883l_test(void *pvParameters)
         vTaskDelay(50 / portTICK_PERIOD_MS);
 	
     }
-    Xoffset = (xmax + xmin)/2;
-    Yoffset = (ymax + ymin)/2;
+    // from https://appelsiini.net/2018/calibrate-magnetometer/
+    Xoffset = (xmax + xmin) / 2;
+    Yoffset = (ymax + ymin) / 2;
+    Zoffset = (zmax + zmin) / 2;
+    avg_delta_x = (xmax - xmin) / 2;
+    avg_delta_y = (ymax - ymin) / 2;
+    avg_delta_z = (zmax - zmin) / 2;
+    
+    avg_delta = (avg_delta_x + avg_delta_y + avg_delta_z) / 3;
+    
+    Xscale = avg_delta / avg_delta_x;
+    Yscale = avg_delta / avg_delta_y;
+    Zscale = avg_delta / avg_delta_z;
+    
+    ///
 
-    Xscale = xmax - xmin;
-    Yscale = ymax - ymin;
+	
+    //Xoffset = (xmax + xmin)/2;
+    //Yoffset = (ymax + ymin)/2;
+
+    //Xscale = xmax - xmin;
+    //Yscale = ymax - ymin;
 
             printf("Magnetic data min: X:%.2f mG, Y:%.2f mG, Z:%.2f mG\n", xmin, ymin, zmin);
             printf("Magnetic data max: X:%.2f mG, Y:%.2f mG, Z:%.2f mG\n", xmax, ymax, zmax);
@@ -86,6 +109,10 @@ void hmc5883l_test(void *pvParameters)
         xmag = (xmag - Xoffset) * Xscale;
         ymag = (ymag - Yoffset) * Yscale;
         angle = atan2(xmag, ymag)*(180/3.14);
+
+
+        printf("Magnetic data min: X:%.2f mG, Y:%.2f mG, Z:%.2f mG\n", xmin, ymin, zmin);
+        printf("Magnetic data max: X:%.2f mG, Y:%.2f mG, Z:%.2f mG\n", xmax, ymax, zmax);
         printf("Magnetic data2: X:%.2f mG, Y:%.2f mG, Z:%.2f mG\n", data2.x, data2.y, data2.z);
         printf("results X:%.2f, Y:%.2f , angele:%.2f\n", xmag, ymag, angle);
         }else{
