@@ -19,8 +19,10 @@ extern "C" {
 #endif
 
 #define HMC5883L_ADDR 0x1e //!< I2C address
+//#define HMC5883L_ADDR 0xd //!< I2C address
 
 #define HMC5883L_ID 0x00333448  //!< Chip ID, "H43"
+//#define HMC5883L_ID 0x00010000  //!< Chip ID, "H43"
 
 /**
  * Device operating mode
