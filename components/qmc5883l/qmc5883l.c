@@ -11,6 +11,7 @@
 #include <esp_log.h>
 
 #define I2C_FREQ_HZ 400000 // 400kHz
+//#define I2C_FREQ_HZ 100000 // 400kHz
 
 #define REG_XOUT_L 0x00
 #define REG_XOUT_H 0x01
@@ -118,7 +119,9 @@ esp_err_t qmc5883l_set_config(qmc5883l_t *dev, qmc5883l_odr_t odr, qmc5883l_osr_
     CHECK(read_register(dev, REG_CTRL1, &v));
     dev->range = rng;
     CHECK(write_register(dev, REG_FBR, 1)); // Define set/reset period
-    return write_register(dev, REG_CTRL1, (v & 0x03) | ((odr & 3) << 2) | ((rng & 1) << 4) | ((osr & 3) << 6));
+    return write_register(dev, REG_CTRL1, (v & 0x03) | 0x01 | 0x0C | 0x10 | 0X00 ); // CONTROL MODE CONTINUOUS (0x01), ODR 200Hz (0x0C),FULL SCALE 8G (0x10), OSR (0x00)
+    //return write_register(dev, REG_CTRL1, (v & 0x03) | 0x1d);
+    //return write_register(dev, REG_CTRL1, (v & 0x03) | ((odr & 3) << 2) | ((rng & 1) << 4) | ((osr & 3) << 6));
 }
 
 esp_err_t qmc5883l_get_config(qmc5883l_t *dev, qmc5883l_odr_t *odr, qmc5883l_osr_t *osr, qmc5883l_range_t *rng)
