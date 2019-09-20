@@ -62,7 +62,7 @@ void qmc5883l_test(void *pvParameters)
 		if(zmax<zvalue[i]){ zmax=zvalue[i];};
 		if(xmin>xvalue[i]){ xmin=xvalue[i];};
 		if(ymin>yvalue[i]){ ymin=yvalue[i];};
-	if(zmin>zvalue[i]){ zmin=zvalue[i];};
+		if(zmin>zvalue[i]){ zmin=zvalue[i];};
 	}
         vTaskDelay(50 / portTICK_PERIOD_MS);
 	
