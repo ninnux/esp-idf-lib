@@ -119,8 +119,10 @@ esp_err_t qmc5883l_set_config(qmc5883l_t *dev, qmc5883l_odr_t odr, qmc5883l_osr_
     CHECK(read_register(dev, REG_CTRL1, &v));
     dev->range = rng;
     CHECK(write_register(dev, REG_FBR, 1)); // Define set/reset period
-    return write_register(dev, REG_CTRL1, (v & 0x03) | 0x01 | 0x0C | 0x10 | 0X00 ); // CONTROL MODE CONTINUOUS (0x01), ODR 200Hz (0x0C),FULL SCALE 8G (0x10), OSR (0x00)
+//WORKS    return write_register(dev, REG_CTRL1, (v & 0x03) | 0x01 | 0x04 | 0x00 | 0xC0 ); // CONTROL MODE CONTINUOUS (0x01), ODR 50Hz (0x04),FULL SCALE 2G (0x00), OSR 64 (0xC0)
+    //return write_register(dev, REG_CTRL1, (v & 0x03) | 0x01 | 0x0C | 0x10 | 0X00 ); // CONTROL MODE CONTINUOUS (0x01), ODR 200Hz (0x0C),FULL SCALE 8G (0x10), OSR 512(0x00)
     //return write_register(dev, REG_CTRL1, (v & 0x03) | 0x1d);
+    return write_register(dev, REG_CTRL1, (v & 0x03) | 0x01 | ((odr & 3) << 2) | ((rng & 1) << 4) | ((osr & 3) << 6));
     //return write_register(dev, REG_CTRL1, (v & 0x03) | ((odr & 3) << 2) | ((rng & 1) << 4) | ((osr & 3) << 6));
 }
 
