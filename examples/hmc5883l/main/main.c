@@ -21,16 +21,16 @@ float zmax=0;
 float Xoffset;
 float Yoffset;
 float Zoffset;
-float Xscale;
-float Yscale;
-float Zscale;
+float scale_x;
+float scale_y;
+//float scale_z;
 float xmag;
 float ymag;
 float angle;
-float avg_delta_x;
-float avg_delta_y;
-float avg_delta_z;
-float avg_delta;
+double avg_delta_x;
+double avg_delta_y;
+double avg_delta_z;
+double avg_delta;
 
 
 void hmc5883l_test(void *pvParameters)
@@ -73,19 +73,18 @@ void hmc5883l_test(void *pvParameters)
 	
     }
     // from https://appelsiini.net/2018/calibrate-magnetometer/
-    Xoffset = (xmax + xmin) / 2;
-    Yoffset = (ymax + ymin) / 2;
-    Zoffset = (zmax + zmin) / 2;
-    avg_delta_x = (xmax - xmin) / 2;
-    avg_delta_y = (ymax - ymin) / 2;
-    avg_delta_z = (zmax - zmin) / 2;
+    Xoffset=(xmax+xmin)/2;
+    Yoffset=(ymax+ymin)/2;
+    //Zoffset = (zmax + zmin)/2;
+    avg_delta_x=(xmax-xmin)/2;
+    avg_delta_y=(ymax-ymin)/2;
+    avg_delta_z=(zmax-zmin)/2;
+    printf("avg_x:%.2f avg_y:%.2f avg_z:%.2f\n",avg_delta_x,avg_delta_y,avg_delta_z); 
+    avg_delta=(avg_delta_x+avg_delta_y+avg_delta_z)/3;
     
-    avg_delta = (avg_delta_x + avg_delta_y + avg_delta_z) / 3;
-    
-    Xscale = avg_delta / avg_delta_x;
-    Yscale = avg_delta / avg_delta_y;
-    Zscale = avg_delta / avg_delta_z;
-    
+    scale_x=avg_delta/avg_delta_x;
+    scale_y=avg_delta/avg_delta_y;
+    //scale_z = avg_delta/avg_delta_z;
     ///
 
 	
@@ -95,10 +94,10 @@ void hmc5883l_test(void *pvParameters)
     //Xscale = xmax - xmin;
     //Yscale = ymax - ymin;
 
-            printf("Magnetic data min: X:%.2f mG, Y:%.2f mG, Z:%.2f mG\n", xmin, ymin, zmin);
-            printf("Magnetic data max: X:%.2f mG, Y:%.2f mG, Z:%.2f mG\n", xmax, ymax, zmax);
-            printf("Offset X:%.2f, Y:%.2f\n", Xoffset,Yoffset);
-            printf("scale X:%.2f, Y:%.2f\n", Xscale,Yscale);
+    printf("Magnetic data min: X:%.2f mG, Y:%.2f mG, Z:%.2f mG\n", xmin, ymin, zmin);
+    printf("Magnetic data max: X:%.2f mG, Y:%.2f mG, Z:%.2f mG\n", xmax, ymax, zmax);
+    //printf("Offset X:%.2f, Y:%.2f\n", Xoffset,Yoffset);
+    //printf("scale X:%.2f, Y:%.2f\n", Xscale,Yscale);
 
     while (1)
     {
@@ -106,9 +105,9 @@ void hmc5883l_test(void *pvParameters)
         if (hmc5883l_get_data(&dev, &data2) == ESP_OK){
 	xmag=data2.x;
 	ymag=data2.y;
-        xmag = (xmag - Xoffset) * Xscale;
-        ymag = (ymag - Yoffset) * Yscale;
-        angle = atan2(xmag, ymag)*(180/3.14);
+        xmag = (xmag - Xoffset) * scale_x;
+        ymag = (ymag - Yoffset) * scale_y;
+        angle = atan2(xmag, ymag)*(180/3.14)+180;
 
 
         printf("Magnetic data min: X:%.2f mG, Y:%.2f mG, Z:%.2f mG\n", xmin, ymin, zmin);
